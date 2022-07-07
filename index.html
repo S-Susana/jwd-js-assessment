@@ -7,6 +7,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+
+    <!--Fontawesome CDN link for icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -16,35 +19,50 @@
     />
     <title>Quiz</title>
   </head>
-  <body>
-    <div class="container m-5" id="start">
-      <div class="card" style="width: 18rem">
+  <body class="bg-image" style="background-image: url('bg-yellowWall.jpg'); padding-top: 15rem; padding-bottom: 5rem; align-items: center">
+    <div class="container m-15" id="start">
+      <div class="card text-center" style= "width: 50rem">
         <div class="card-body">
-          <h5 class="card-title">Test your knowledge</h5>
-          <p class="card-text">Some quick description about the quiz .</p>
-          <a class="btn btn-primary">Start</a>
+          <h2 class="card-title">Test your knowledge</h2><br>
+          <p class="card-text">Put your knowledge to the test with this fun quiz!</p>
+          <button class="btn btn-lg btn-block" style="background-color: #2fcafa; color: white;">Start</button>
         </div>
       </div>
     </div>
 
     <!-- (B) QUIZ CONTAINER -->
     <div class="container" id="quizBlock" style="display: none">
-      <div class="mb-5">
-        <h2>Test your knowledge</h2>
-        - Time remaining <span id="time">01:00</span>
+      <div class="mb-5" style="text-align: center">
+        <h1>Test your knowledge</h1><br>
+        <h3 id="time" style="
+          border-radius: 15px;
+          background: #2fcafa;
+          height: 55px;
+          width: 40%;
+          margin: auto;
+          padding: 10px 10px 10px 10px;
+          color: white;
+        " >Your time starts now!</h3>
+        <br>
+        <h3 id="calculatedScore" style="color: #126333;"></h3>
       </div>
+      
       <div id="quizWrap"></div>
 
       <div>
         <button type="button" class="btn btn-primary" id="btnSubmit">
           Submit Quiz
         </button>
-        <button type="button" class="btn btn-primary" id="btnReset">
+        <!--Reset button to reload the page-->
+        <button type="button" class="btn btn-primary" id="btnReset" onClick="window.location.reload();">
           Reset Quiz
         </button>
         <span id="score"></span>
       </div>
     </div>
+    <br><br><br><br><br>
+    <footer style="position: fixed; left: 10px;">© Copyright 2022, Susana</footer>
+  
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

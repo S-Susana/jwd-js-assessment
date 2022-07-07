@@ -19,11 +19,26 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 
-window.addEventListener('DOMContentLoaded', () => {
-  const start = document.querySelector('#start');
-  start.addEventListener('click', function (e) {
-    document.querySelector('#quizBlock').style.display = 'block';
-    start.style.display = 'none';
+window.addEventListener("DOMContentLoaded", () => {
+  const start = document.querySelector("#start");
+
+  var downloadTimer;
+
+  start.addEventListener("click", function (e) {
+    document.querySelector("#quizBlock").style.display = "block";
+    start.style.display = "none";
+
+    var timeleft = 60;
+    downloadTimer = setInterval(function countdown(){
+      document.getElementById("time").innerHTML = timeleft + "&nbsp"+"seconds remaining";
+      timeleft -= 1;
+      if(timeleft <= 0){
+      clearInterval(downloadTimer);
+      document.getElementById("time").innerHTML = "Time is up!"
+      calculateScore();
+      }
+    }, 1000);
+
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -37,22 +52,32 @@ window.addEventListener('DOMContentLoaded', () => {
     {
       q: 'Which is the largest ocean on Earth?',
       o: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
-      a: 3,
+      a: 3,  // array index 3 - so Pacific Ocean is the correct answer here
     },
     {
       q: 'What is the capital of Australia',
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
-      a: 1,
+      a: 1,  // array index 1 - so Canberra is the correct answer here
     },
+    {
+      q: 'Which of the following animals can run the fastest?',
+      o: ['Cheetah', 'Leopard', 'Tiger', 'Lion'],
+      a: 0, // array index 0 - so Cheetah is the correct answer here
+    },
+    {
+      q: 'What is the rarest type of blood in the human body?',
+      o: ['O positive', 'B negative', 'AB negative','A positive'],
+      a: 2, // array index 2 - so AB negative is the correct answer here
+    }
   ];
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
-    const quizWrap = document.querySelector('#quizWrap');
-    let quizDisplay = '';
+    const quizWrap = document.querySelector("#quizWrap");
+    let quizDisplay = "";
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
-                   Q - ${quizItem.q}
+                   <h4>Q - ${quizItem.q}</h4>
                     <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0"> ${quizItem.o[0]}</li>
                     <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
                     <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
@@ -64,27 +89,59 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // Calculate the score
-  const calculateScore = () => {
+  const calculateScore = () => {  
     let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
-
+        liElement = document.querySelector("#" + li);
+        radioElement = document.querySelector("#" + r);
+        
+        //change background color of li element here
         if (quizItem.a == i) {
-          //change background color of li element here
+          liElement.style.backgroundColor = '#126333';
+          liElement.style.color = 'white';
+
         }
 
-        if (radioElement.checked) {
-          // code for task 1 goes here
+        // code for task 1 goes here (Calculate the score as the total of the number of correct answers)
+        if(radioElement.checked){
+          if(quizItem.a == i){
+          liElement.style.backgroundColor = '#126333';
+          liElement.style.color = 'white';
+          liElement.style.fontWeight = 'bold';
+
+          score++;
+          }else{
+            liElement.style.color = '#d90f0f';
+            liElement.style.fontWeight = 'bold';
+
+          }
         }
+        
+        radioElement.disabled = true;
       }
-    });
-  };
+    }
+  );
+
+  const calculatedScore = document.querySelector('#calculatedScore');
+  calculatedScore.innerHTML = `You got ${score} out of 5 questions correct`;
+  scroll(0,0);
+  
+};
 
   // call the displayQuiz function
   displayQuiz();
+
+  const submit = document.querySelector("#btnSubmit");
+  submit.addEventListener("click", function (e) {
+    calculateScore();
+    clearInterval(downloadTimer);
+    document.getElementById("time").innerHTML = "Your results:"
+
+  })
+  
+
 });
